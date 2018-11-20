@@ -22,44 +22,32 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VideoCell" rowHeight="100" id="dII-iq-gb2" customClass="FilmCell" customModule="simple_app" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FilmCell" rowHeight="500" id="dII-iq-gb2" customClass="FilmCell" customModule="simple_app" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="500"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dII-iq-gb2" id="7tx-Q9-L9k">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="499.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Gy7-Cn-nmU">
-                                                    <rect key="frame" x="12" y="-0.5" width="50" height="100.5"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mc3-Fo-bQK">
+                                                    <rect key="frame" x="15" y="5" width="80" height="120"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="100" id="AoM-uS-0lN"/>
-                                                        <constraint firstAttribute="width" secondItem="Gy7-Cn-nmU" secondAttribute="height" multiplier="1:2" id="nhW-EZ-byZ"/>
+                                                        <constraint firstAttribute="height" constant="120" id="KeL-8v-fOL"/>
+                                                        <constraint firstAttribute="width" constant="80" id="kmu-65-lIm"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="otW-kb-Z0T">
-                                                    <rect key="frame" x="74" y="39" width="289" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="25" id="4iN-Yn-tNN"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ9-F7-hVb">
+                                                    <rect key="frame" x="126" y="55" width="218" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Gy7-Cn-nmU" firstAttribute="centerX" secondItem="7tx-Q9-L9k" secondAttribute="centerX" id="5WT-ph-J7w"/>
-                                                <constraint firstItem="Gy7-Cn-nmU" firstAttribute="centerY" secondItem="7tx-Q9-L9k" secondAttribute="centerY" id="C7H-Ar-Qka"/>
-                                                <constraint firstItem="Gy7-Cn-nmU" firstAttribute="centerY" secondItem="7tx-Q9-L9k" secondAttribute="centerY" id="Erb-lo-d1c"/>
-                                                <constraint firstItem="otW-kb-Z0T" firstAttribute="leading" secondItem="Gy7-Cn-nmU" secondAttribute="trailing" constant="12" id="Niz-o7-oOw"/>
-                                                <constraint firstAttribute="trailing" secondItem="otW-kb-Z0T" secondAttribute="trailing" constant="12" id="Pv4-CR-Gzy"/>
-                                                <constraint firstItem="Gy7-Cn-nmU" firstAttribute="leading" secondItem="7tx-Q9-L9k" secondAttribute="leading" constant="12" id="Ymm-Cq-m7Z"/>
-                                                <constraint firstItem="Gy7-Cn-nmU" firstAttribute="centerX" secondItem="7tx-Q9-L9k" secondAttribute="centerX" id="bTf-SK-rJP"/>
-                                                <constraint firstAttribute="trailing" secondItem="Gy7-Cn-nmU" secondAttribute="trailing" constant="12" id="fim-PX-Ak4"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="filmImage" destination="Gy7-Cn-nmU" id="Svf-ww-BDW"/>
-                                            <outlet property="filmTittleLabel" destination="otW-kb-Z0T" id="9ga-8E-wzq"/>
+                                            <outlet property="filmImage" destination="mc3-Fo-bQK" id="RvK-Pb-rqt"/>
+                                            <outlet property="filmTittleLabel" destination="cZ9-F7-hVb" id="xB6-q4-3kJ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
