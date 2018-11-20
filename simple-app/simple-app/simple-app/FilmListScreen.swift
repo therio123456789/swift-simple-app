@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 class FilmListScreen: UIViewController {
     
@@ -20,9 +22,7 @@ class FilmListScreen: UIViewController {
     func createArray() -> [Film] {
         var filmsTemp: [Film] = []
         let film1 = Film(image: #imageLiteral(resourceName: "img1"), title: "Pic 1")
-        let film2 = Film(image: #imageLiteral(resourceName: "img2"), title: "Pic 2")
         filmsTemp.append(film1)
-        filmsTemp.append(film2)
         return filmsTemp
     }
 }
@@ -39,10 +39,12 @@ extension FilmListScreen: UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "FilmCell") as! FilmCell
         
-        print(cell)
-        
         cell.setFilm(film: film)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 125
     }
 }
