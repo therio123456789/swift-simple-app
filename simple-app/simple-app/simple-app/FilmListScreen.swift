@@ -60,18 +60,6 @@ class FilmListScreen: UIViewController {
         }
     }
     
-    fileprivate func getImage(_ imageUrl: String) -> UIImage? {
-        if let url = URL(string: imageUrl) {
-            do {
-                let data = try Data(contentsOf: url)
-                return UIImage(data: data)
-            } catch let err {
-                print("Error: \(err.localizedDescription)")
-            }
-        }
-        return UIImage()
-    }
-    
     fileprivate func createFilmArray(_ data: Data) -> [Film] {
         var filmsTemp = [Film]()
         do {
@@ -99,7 +87,7 @@ class FilmListScreen: UIViewController {
         let filmData = jsonArray[i]
         let filmTitle: String = "\(String(describing: filmData["title"]!))"
         let filmUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
-        return Film(image: self.getImage(filmUrl)!, title: filmTitle)
+        return Film(imageUrl: filmUrl, title: filmTitle)
     }
     
 }

@@ -11,9 +11,20 @@ class Film {
     var image: UIImage
     var title: String
     
-    init(image: UIImage, title: String) {
-        self.image = image
+    init(imageUrl: String, title: String) {
+        self.image = Film.getImage(imageUrl)!
         self.title = title
     }
     
+    fileprivate static func getImage(_ imageUrl: String) -> UIImage? {
+        if let url = URL(string: imageUrl) {
+            do {
+                let data = try Data(contentsOf: url)
+                return UIImage(data: data)
+            } catch let err {
+                print("Error: \(err.localizedDescription)")
+            }
+        }
+        return UIImage()
+    }
 }
