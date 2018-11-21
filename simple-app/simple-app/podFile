@@ -5,4 +5,5 @@ use_frameworks!
 target 'simple-app' do
     pod 'Alamofire', '~> 4.7'
     pod 'AlamofireImage', '~> 3.4'
+    pod 'SwiftGifOrigin', '~> 1.6.1'
 end

@@ -9,22 +9,37 @@
 import UIKit
 import Alamofire
 import AlamofireImage
+import SwiftGifOrigin
 
 class FilmListScreen: UIViewController {
+    
+    let LOADING_ASSET = "loading"
     
     let URL_GET_DATA = "http://www.mocky.io/v2/5bf3bce23100002c00619909"
     
     let HOST_IMAGE = "http://image.tmdb.org/t/p/w500"
     
+    @IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var filmTable: UITableView!
+    
     var films = [Film]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        prepareForData()
+    }
+    
+    fileprivate func prepareForData() {
+        filmTable.isHidden = true
+        loadingImage.isHidden = false
+        self.loadingImage.image = UIImage.gif(asset: LOADING_ASSET)
         createDataCompletion(completion: {
             (filmsTemp) in
             self.films = filmsTemp
             self.filmTable.reloadData()
+            self.filmTable.isHidden = false
+            self.loadingImage.isHidden = true
         })
     }
     
@@ -108,5 +123,14 @@ extension FilmListScreen: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 125
+    }
+}
+
+extension UIImage {
+    public class func gif(asset: String) -> UIImage? {
+        if let asset = NSDataAsset(name: asset) {
+            return UIImage.gif(data: asset.data)
+        }
+        return nil
     }
 }

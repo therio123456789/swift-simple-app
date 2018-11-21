@@ -39,7 +39,7 @@
 
 /* Begin PBXFileReference section */
 		279C47A78E7E8CC7F6A16B70 /* Pods-simple-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-simple-app.release.xcconfig"; path = "Pods/Target Support Files/Pods-simple-app/Pods-simple-app.release.xcconfig"; sourceTree = "<group>"; };
-		7119185F21A4169A00A28283 /* podFile */ = {isa = PBXFileReference; lastKnownFileType = text; path = podFile; sourceTree = "<group>"; };
+		7119185F21A4169A00A28283 /* podFile */ = {isa = PBXFileReference; lastKnownFileType = text; path = podFile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7189648F21A2C2BF004B9126 /* simple-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "simple-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7189649221A2C2BF004B9126 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7189649721A2C2BF004B9126 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -299,6 +299,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-simple-app/Pods-simple-app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftGifOrigin/SwiftGifOrigin.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -306,6 +307,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftGifOrigin.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
