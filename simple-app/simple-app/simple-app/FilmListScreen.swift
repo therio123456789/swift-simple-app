@@ -28,16 +28,37 @@ class FilmListScreen: UIViewController {
         })
     }
     
-    fileprivate func getFilmObject(_ jsonArray: [[String : Any]], _ i: Int) -> Film {
-        let filmData = jsonArray[i]
-        let filmTitle: String = "\(String(describing: filmData["title"]!))"
-        let filmUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
-        return Film(image: self.getImage(filmUrl)!, title: filmTitle)
+    func createDataCompletion(completion:@escaping (_ filmsTemp: [Film]) ->()) {
+        var filmsTemp = [Film]()
+        Alamofire.request(URL_GET_DATA).responseJSON { response in
+            switch(response.result) {
+            case .success(_):
+                if let json = response.result.value {
+                    filmsTemp = self.getFilmArray(json)
+                }
+                completion(filmsTemp)
+                break
+            case .failure(_):
+                completion(filmsTemp)
+                break;
+            }
+        }
     }
     
-    fileprivate func getFilmsArray(_ json: Any) -> [Film] {
+    fileprivate func getImage(_ imageUrl: String) -> UIImage? {
+        if let url = URL(string: imageUrl) {
+            do {
+                let data = try Data(contentsOf: url)
+                return UIImage(data: data)
+            } catch let err {
+                print("Error: \(err.localizedDescription)")
+            }
+        }
+        return UIImage()
+    }
+    
+    fileprivate func createFilmArray(_ data: Data) -> [Film] {
         var filmsTemp = [Film]()
-        let data = "\(json)".data(using: .utf8)!
         do {
             if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? [Dictionary<String,Any>]
             {
@@ -54,35 +75,18 @@ class FilmListScreen: UIViewController {
         return filmsTemp
     }
     
-    func createDataCompletion(completion:@escaping (_ filmsTemp: [Film]) ->()) {
-        var filmsTemp = [Film]()
-        Alamofire.request(URL_GET_DATA).responseJSON { response in
-            switch(response.result) {
-            case .success(_):
-                if let json = response.result.value {
-                    filmsTemp = self.getFilmsArray(json)
-                }
-                completion(filmsTemp)
-                break
-            case .failure(_):
-                completion(filmsTemp)
-                break;
-            }
-        }
-        
+    fileprivate func getFilmArray(_ json: Any) -> [Film] {
+        let data = "\(json)".data(using: .utf8)!
+        return createFilmArray(data)
     }
     
-    func getImage(_ imageUrl: String) -> UIImage? {
-        if let url = URL(string: imageUrl) {
-            do {
-                let data = try Data(contentsOf: url)
-                return UIImage(data: data)
-            } catch let err {
-                print("Error: \(err.localizedDescription)")
-            }
-        }
-        return UIImage()
+    fileprivate func getFilmObject(_ jsonArray: [[String : Any]], _ i: Int) -> Film {
+        let filmData = jsonArray[i]
+        let filmTitle: String = "\(String(describing: filmData["title"]!))"
+        let filmUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
+        return Film(image: self.getImage(filmUrl)!, title: filmTitle)
     }
+    
 }
 
 extension FilmListScreen: UITableViewDataSource, UITableViewDelegate {
