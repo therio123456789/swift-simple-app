@@ -10,10 +10,12 @@ import Foundation
 class Film {
     var image: UIImage
     var title: String
+    var overview: String
     
-    init(imageUrl: String, title: String) {
+    init(imageUrl: String, title: String, overview: String) {
         self.image = Film.getImage(imageUrl)!
         self.title = title
+        self.overview = overview
     }
     
     fileprivate static func getImage(_ imageUrl: String) -> UIImage? {

@@ -42,10 +42,17 @@
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="p3I-Fi-l1d"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ9-F7-hVb">
-                                                    <rect key="frame" x="103" y="11" width="257" height="37"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chm-RI-GXN">
+                                                    <rect key="frame" x="103" y="41" width="257" height="80"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ9-F7-hVb">
+                                                    <rect key="frame" x="103" y="5" width="257" height="37"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -56,6 +63,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="filmImage" destination="mc3-Fo-bQK" id="RvK-Pb-rqt"/>
+                                            <outlet property="filmOverviewLabel" destination="chm-RI-GXN" id="SqO-P6-RQp"/>
                                             <outlet property="filmTittleLabel" destination="cZ9-F7-hVb" id="xB6-q4-3kJ"/>
                                         </connections>
                                     </tableViewCell>

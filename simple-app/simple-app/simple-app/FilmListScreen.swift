@@ -86,8 +86,9 @@ class FilmListScreen: UIViewController {
     fileprivate func getFilmObject(_ jsonArray: [[String : Any]], _ i: Int) -> Film {
         let filmData = jsonArray[i]
         let filmTitle: String = "\(String(describing: filmData["title"]!))"
-        let filmUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
-        return Film(imageUrl: filmUrl, title: filmTitle)
+        let filmPosterUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
+        let filmOverview: String = "\(String(describing: filmData["overview"]!))"
+        return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
     
 }

@@ -12,9 +12,11 @@ class FilmCell: UITableViewCell{
 
     @IBOutlet weak var filmTittleLabel: UILabel!
     @IBOutlet weak var filmImage: UIImageView!
+    @IBOutlet weak var filmOverviewLabel: UILabel!
     
     func setFilm(film: Film) {
         filmImage.image = film.image
         filmTittleLabel.text = film.title
+        filmOverviewLabel.text = film.overview
     }
 }
