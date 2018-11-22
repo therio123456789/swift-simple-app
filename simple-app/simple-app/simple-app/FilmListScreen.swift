@@ -11,7 +11,7 @@ import Alamofire
 import AlamofireImage
 import SwiftGifOrigin
 
-class FilmListScreen: UIViewController {
+class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     let LOADING_ASSET = "loading"
     
@@ -23,6 +23,47 @@ class FilmListScreen: UIViewController {
     @IBOutlet weak var filmTable: UITableView!
     
     var films = [Film]()
+    var filmGroup: [String: [Film]] = [:]
+    var groupTitles: [String] = []
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return (filmGroup[groupTitles[section]]?.count)!
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return filmGroup.count
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return groupTitles
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return index
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return groupTitles[section] as? String
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let film = filmGroup[groupTitles[indexPath.section]]![indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FilmCell") as! FilmCell
+        
+        cell.setFilm(film: film)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 125
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,13 +78,56 @@ class FilmListScreen: UIViewController {
         createDataCompletion(completion: {
             (filmsTemp) in
             self.films = filmsTemp
+            self.filmGroup = self.createFilmGroupByTitle(self.films)
+            self.groupTitles = Array(self.filmGroup.keys).sorted {
+                $0 < $1
+            }
             self.filmTable.reloadData()
             self.filmTable.isHidden = false
             self.loadingImage.isHidden = true
         })
     }
     
-    func createDataCompletion(completion:@escaping (_ filmsTemp: [Film]) ->()) {
+    fileprivate func createFilmGroupByTitle(_ filmsTemp: [Film]) -> [String: [Film]] {
+        let filmsSorted = self.sortArrayByAlphabet(filmsRaw: filmsTemp)
+        var filmGroupTemp: [String: [Film]] = [:]
+        var groupTitle = ""
+        var filmsInGroup: [Film] = []
+        for i in 0..<filmsSorted.count {
+            let firstChar = getFirstLetterTitle(filmsSorted[i].title)
+            if i == 0 {
+                groupTitle = firstChar
+            }
+            
+            if i == filmsSorted.count - 1 {
+                filmGroupTemp[groupTitle] = filmsInGroup
+            }
+            
+            if groupTitle != firstChar {
+                filmGroupTemp[groupTitle] = filmsInGroup
+                
+                filmsInGroup = []
+                groupTitle = firstChar
+                filmsInGroup.append(filmsSorted[i])
+                continue
+            } else {
+                filmsInGroup.append(filmsSorted[i])
+            }
+        }
+        return filmGroupTemp
+    }
+    
+    fileprivate func getFirstLetterTitle(_ text: String) -> String {
+        return String(text.prefix(1))
+    }
+    
+    fileprivate func sortArrayByAlphabet( filmsRaw: [Film]) -> [Film] {
+        return filmsRaw.sorted {
+            $0.title < $1.title
+        }
+    }
+    
+    fileprivate func createDataCompletion(completion:@escaping (_ filmsTemp: [Film]) ->()) {
         var filmsTemp = [Film]()
         Alamofire.request(URL_GET_DATA).responseJSON { response in
             switch(response.result) {
@@ -91,28 +175,6 @@ class FilmListScreen: UIViewController {
         return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
     
-}
-
-extension FilmListScreen: UITableViewDataSource, UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return films.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let film = films[indexPath.row]
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FilmCell") as! FilmCell
-        
-        cell.setFilm(film: film)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 125
-    }
 }
 
 extension UIImage {
