@@ -43,7 +43,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return groupTitles[section] as? String
+        return groupTitles[section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,7 +58,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
+        print("\(indexPath.section) + \(indexPath.row)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -94,20 +94,20 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         var groupTitle = ""
         var filmsInGroup: [Film] = []
         for i in 0..<filmsSorted.count {
-            let firstChar = getFirstLetterTitle(filmsSorted[i].title)
-            if i == 0 {
-                groupTitle = firstChar
+            let firstCharTitle = getFirstLetterTitle(filmsSorted[i].title)
+            if self.isFirst(i) {
+                groupTitle = firstCharTitle
             }
             
-            if i == filmsSorted.count - 1 {
+            if isLast(filmsSorted, i) {
                 filmGroupTemp[groupTitle] = filmsInGroup
             }
             
-            if groupTitle != firstChar {
+            if groupTitle != firstCharTitle {
                 filmGroupTemp[groupTitle] = filmsInGroup
                 
                 filmsInGroup = []
-                groupTitle = firstChar
+                groupTitle = firstCharTitle
                 filmsInGroup.append(filmsSorted[i])
                 continue
             } else {
@@ -115,6 +115,14 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
             }
         }
         return filmGroupTemp
+    }
+    
+    fileprivate func isFirst(_ index: Int) -> Bool{
+        return index == 0
+    }
+    
+    fileprivate func isLast( _ array: [Any], _ index: Int) -> Bool {
+        return index == array.count - 1
     }
     
     fileprivate func getFirstLetterTitle(_ text: String) -> String {
@@ -174,7 +182,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         let filmOverview: String = "\(String(describing: filmData["overview"]!))"
         return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
-    
 }
 
 extension UIImage {
