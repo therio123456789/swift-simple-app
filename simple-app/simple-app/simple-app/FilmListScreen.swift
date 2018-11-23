@@ -11,14 +11,14 @@ import Alamofire
 import AlamofireImage
 import SwiftGifOrigin
 
-class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     
     let LOADING_ASSET = "loading"
     
     let URL_GET_DATA = "http://www.mocky.io/v2/5bf3bce23100002c00619909"
     
     let HOST_IMAGE = "http://image.tmdb.org/t/p/w500"
-     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var filmTable: UITableView!
     
@@ -30,7 +30,25 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         prepareForData()
+        setupSearchBar()
+    }
+    
+    func setupSearchBar() {
+        searchBar.delegate = self
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: self.films)
+            self.filmTable.reloadData()
+            return
+        }
+        let currentFilm = films.filter { (film) -> Bool in
+            film.title.lowercased().contains(searchText.lowercased())
+        }
         
+        (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: currentFilm)
+        self.filmTable.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -64,13 +82,10 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     }
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let film = filmGroup[groupTitles[indexPath.section]]![indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "FilmCell") as! FilmCell
         
         cell.setFilm(film: film)
-        
         return cell
     }
     
@@ -78,9 +93,9 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         return 125
     }
     
-    fileprivate func groupFilms(films: [Film]) -> ([String: [Film]], [String]) {
-        var filmGroup = self.createFilmGroupByTitle(films)
-        var groupTitles = Array(filmGroup.keys).sorted {
+    fileprivate func getGroupFilm(films: [Film]) -> ([String: [Film]], [String]) {
+        let filmGroup = self.createFilmGroupByTitle(films)
+        let groupTitles = Array(filmGroup.keys).sorted {
             $0 < $1
         }
         return (filmGroup, groupTitles)
@@ -93,7 +108,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         createDataCompletion(completion: {
             (filmsTemp) in
             self.films = filmsTemp
-            (self.filmGroup, self.groupTitles) = self.groupFilms(films: self.films)
+            (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: self.films)
             self.filmTable.reloadData()
             self.filmTable.isHidden = false
             self.loadingImage.isHidden = true
@@ -107,12 +122,9 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         var filmsInGroup: [Film] = []
         for i in 0..<filmsSorted.count {
             let firstChar = getFirstLetterTitle(filmsSorted[i].title)
-            if i == 0 {
-                groupTitle = firstChar
-            }
             
-            if i == filmsSorted.count - 1 {
-                filmGroupTemp[groupTitle] = filmsInGroup
+            if isFirst(index: i) {
+                groupTitle = firstChar
             }
             
             if groupTitle != firstChar {
@@ -125,8 +137,20 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
             } else {
                 filmsInGroup.append(filmsSorted[i])
             }
+            
+            if isLast(index: i, array: filmsSorted) {
+                filmGroupTemp[groupTitle] = filmsInGroup
+            }
         }
         return filmGroupTemp
+    }
+    
+    fileprivate func isFirst(index: Int) -> Bool {
+        return index == 0
+    }
+    
+    fileprivate func isLast(index: Int, array: [Any]) -> Bool {
+        return index == array.count - 1
     }
     
     fileprivate func getFirstLetterTitle(_ text: String) -> String {
