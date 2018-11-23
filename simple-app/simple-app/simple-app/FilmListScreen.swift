@@ -41,11 +41,21 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return index
     }
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return groupTitles[section] as? String
+        return groupTitles[section]
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerView = view as? UITableViewHeaderFooterView
+        headerView?.textLabel?.font = UIFont(name: "Time New Roman", size: 20)
+        headerView?.textLabel?.textColor = UIColor.darkGray
+        headerView?.textLabel?.textAlignment = NSTextAlignment.right
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+ 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let film = filmGroup[groupTitles[indexPath.section]]![indexPath.row]
