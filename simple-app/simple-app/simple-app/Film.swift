@@ -8,17 +8,17 @@
 import UIKit
 import Foundation
 class Film {
-    var image: UIImage
+    var imageUrl: String
     var title: String
     var overview: String
     
     init(imageUrl: String, title: String, overview: String) {
-        self.image = Film.getImage(imageUrl)!
+        self.imageUrl = imageUrl
         self.title = title
         self.overview = overview
     }
     
-    fileprivate static func getImage(_ imageUrl: String) -> UIImage? {
+    public static func getImage(_ imageUrl: String) -> UIImage? {
         if let url = URL(string: imageUrl) {
             do {
                 let data = try Data(contentsOf: url)
