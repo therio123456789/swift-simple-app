@@ -11,20 +11,27 @@ import Alamofire
 import AlamofireImage
 import SwiftGifOrigin
 
-class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     let LOADING_ASSET = "loading"
     
     let URL_GET_DATA = "http://www.mocky.io/v2/5bf3bce23100002c00619909"
     
     let HOST_IMAGE = "http://image.tmdb.org/t/p/w500"
-    
+     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var filmTable: UITableView!
     
     var films = [Film]()
     var filmGroup: [String: [Film]] = [:]
     var groupTitles: [String] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        prepareForData()
+        
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return (filmGroup[groupTitles[section]]?.count)!
@@ -67,18 +74,16 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 125
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        prepareForData()
+    fileprivate func groupFilms(films: [Film]) -> ([String: [Film]], [String]) {
+        var filmGroup = self.createFilmGroupByTitle(films)
+        var groupTitles = Array(filmGroup.keys).sorted {
+            $0 < $1
+        }
+        return (filmGroup, groupTitles)
     }
     
     fileprivate func prepareForData() {
@@ -88,10 +93,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         createDataCompletion(completion: {
             (filmsTemp) in
             self.films = filmsTemp
-            self.filmGroup = self.createFilmGroupByTitle(self.films)
-            self.groupTitles = Array(self.filmGroup.keys).sorted {
-                $0 < $1
-            }
+            (self.filmGroup, self.groupTitles) = self.groupFilms(films: self.films)
             self.filmTable.reloadData()
             self.filmTable.isHidden = false
             self.loadingImage.isHidden = true
