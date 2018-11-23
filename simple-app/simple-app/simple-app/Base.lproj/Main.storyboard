@@ -55,27 +55,32 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chm-RI-GXN">
-                                                    <rect key="frame" x="103" y="41" width="257" height="80"/>
+                                                    <rect key="frame" x="103" y="41" width="220" height="80"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ9-F7-hVb">
-                                                    <rect key="frame" x="103" y="5" width="257" height="37"/>
+                                                    <rect key="frame" x="103" y="5" width="220" height="37"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VCd-mf-J0d">
+                                                    <rect key="frame" x="326" y="42" width="48" height="48"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="mc3-Fo-bQK" firstAttribute="leading" secondItem="7tx-Q9-L9k" secondAttribute="leading" constant="15" id="QfG-gS-Viq"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="filmImage" destination="mc3-Fo-bQK" id="RvK-Pb-rqt"/>
+                                            <outlet property="favouriteButton" destination="VCd-mf-J0d" id="gES-9M-bpA"/>
                                             <outlet property="filmOverviewLabel" destination="chm-RI-GXN" id="SqO-P6-RQp"/>
+                                            <outlet property="filmPoster" destination="mc3-Fo-bQK" id="RvK-Pb-rqt"/>
                                             <outlet property="filmTittleLabel" destination="cZ9-F7-hVb" id="xB6-q4-3kJ"/>
                                         </connections>
                                     </tableViewCell>

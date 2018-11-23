@@ -93,14 +93,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         return 125
     }
     
-    fileprivate func getGroupFilm(films: [Film]) -> ([String: [Film]], [String]) {
-        let filmGroup = self.createFilmGroupByTitle(films)
-        let groupTitles = Array(filmGroup.keys).sorted {
-            $0 < $1
-        }
-        return (filmGroup, groupTitles)
-    }
-    
     fileprivate func prepareForData() {
         filmTable.isHidden = true
         loadingImage.isHidden = false
@@ -113,6 +105,14 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
             self.filmTable.isHidden = false
             self.loadingImage.isHidden = true
         })
+    }
+    
+    fileprivate func getGroupFilm(films: [Film]) -> ([String: [Film]], [String]) {
+        let filmGroup = self.createFilmGroupByTitle(films)
+        let groupTitles = Array(filmGroup.keys).sorted {
+            $0 < $1
+        }
+        return (filmGroup, groupTitles)
     }
     
     fileprivate func createFilmGroupByTitle(_ filmsTemp: [Film]) -> [String: [Film]] {
@@ -129,7 +129,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
             
             if groupTitle != firstChar {
                 filmGroupTemp[groupTitle] = filmsInGroup
-                
                 filmsInGroup = []
                 groupTitle = firstChar
                 filmsInGroup.append(filmsSorted[i])
@@ -210,7 +209,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         let filmOverview: String = "\(String(describing: filmData["overview"]!))"
         return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
-    
 }
 
 extension UIImage {

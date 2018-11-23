@@ -8,12 +8,13 @@
 import UIKit
 import Foundation
 class Film {
-    var imageUrl: String
+    var posterImageUrl: String
     var title: String
     var overview: String
+    var isFavourite: Bool = false
     
     init(imageUrl: String, title: String, overview: String) {
-        self.imageUrl = imageUrl
+        self.posterImageUrl = imageUrl
         self.title = title
         self.overview = overview
     }
