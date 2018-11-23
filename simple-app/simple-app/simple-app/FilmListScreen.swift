@@ -18,6 +18,9 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     let URL_GET_DATA = "http://www.mocky.io/v2/5bf3bce23100002c00619909"
     
     let HOST_IMAGE = "http://image.tmdb.org/t/p/w500"
+    
+    let CELL_HEADER_TITLE_FONT = "Time New Roman"
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var filmTable: UITableView!
@@ -51,6 +54,23 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         self.filmTable.reloadData()
     }
     
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        switch selectedScope {
+        case 0:
+            (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: films)
+            self.filmTable.reloadData()
+        case 1:
+            let currentFilm = films.filter { (film) ->
+                Bool in
+                film.isFavourite
+            }
+            (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: currentFilm)
+            self.filmTable.reloadData()
+        default:
+            break
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return (filmGroup[groupTitles[section]]?.count)!
     }
@@ -72,7 +92,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let headerView = view as? UITableViewHeaderFooterView
-        headerView?.textLabel?.font = UIFont(name: "Time New Roman", size: 20)
+        headerView?.textLabel?.font = UIFont(name: CELL_HEADER_TITLE_FONT, size: 20)
         headerView?.textLabel?.textColor = UIColor.darkGray
         headerView?.textLabel?.textAlignment = NSTextAlignment.right
     }
@@ -132,7 +152,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
                 filmsInGroup = []
                 groupTitle = firstChar
                 filmsInGroup.append(filmsSorted[i])
-                continue
             } else {
                 filmsInGroup.append(filmsSorted[i])
             }
@@ -205,7 +224,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     fileprivate func getFilmObject(_ jsonArray: [[String : Any]], _ i: Int) -> Film {
         let filmData = jsonArray[i]
         let filmTitle: String = "\(String(describing: filmData["title"]!))"
-        let filmPosterUrl: String = self.HOST_IMAGE+"\(String(describing: filmData["poster_path"]!))"
+        let filmPosterUrl: String = self.HOST_IMAGE + "\(String(describing: filmData["poster_path"]!))"
         let filmOverview: String = "\(String(describing: filmData["overview"]!))"
         return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
