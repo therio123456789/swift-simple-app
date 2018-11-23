@@ -17,16 +17,4 @@ class Film {
         self.title = title
         self.overview = overview
     }
-    
-    public static func getImage(_ imageUrl: String) -> UIImage? {
-        if let url = URL(string: imageUrl) {
-            do {
-                let data = try Data(contentsOf: url)
-                return UIImage(data: data)
-            } catch let err {
-                print("Error: \(err.localizedDescription)")
-            }
-        }
-        return UIImage()
-    }
 }

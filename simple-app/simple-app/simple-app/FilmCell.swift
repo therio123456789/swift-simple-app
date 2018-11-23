@@ -8,7 +8,8 @@
 
 import UIKit
 import QuartzCore
-
+import Alamofire
+import AlamofireImage
 class FilmCell: UITableViewCell{
 
     @IBOutlet weak var filmTittleLabel: UILabel!
@@ -16,8 +17,12 @@ class FilmCell: UITableViewCell{
     @IBOutlet weak var filmOverviewLabel: UILabel!
     
     func setFilm(film: Film) {
-        let rawImage: UIImage = Film.getImage(film.imageUrl)!
-        filmImage.image = rawImage
+        Alamofire.request(film.imageUrl).responseImage {
+            response in
+            if let image = response.result.value {
+                self.filmImage.image = image
+            }
+        }
         filmImage.makeRounded()
         filmTittleLabel.text = film.title
         filmOverviewLabel.text = film.overview
