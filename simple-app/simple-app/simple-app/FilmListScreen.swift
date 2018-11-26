@@ -13,13 +13,19 @@ import SwiftGifOrigin
 
 class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     
-    let LOADING_ASSET = "loading"
+    let LOADING_ASSET_NAME = "loading"
     
     let URL_GET_DATA = "http://www.mocky.io/v2/5bf3bce23100002c00619909"
     
     let HOST_IMAGE = "http://image.tmdb.org/t/p/w500"
     
+    let CELL_IDENTIFIER = "FilmCell"
+    
     let CELL_HEADER_TITLE_FONT = "Time New Roman"
+    
+    let HEIGHT_FOR_ROW: CGFloat = 125
+    
+    let HEIGHT_FOR_SECTION_HEADER: CGFloat = 20
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var loadingImage: UIImageView!
@@ -33,11 +39,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         prepareForData()
-        setupSearchBar()
-    }
-    
-    func setupSearchBar() {
-        searchBar.delegate = self
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -62,13 +63,20 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         case 1:
             let currentFilm = films.filter { (film) ->
                 Bool in
-                film.isFavourite
+                film.isFavourite()
             }
             (self.filmGroup, self.groupTitles) = self.getGroupFilm(films: currentFilm)
             self.filmTable.reloadData()
         default:
             break
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let tableBound = self.filmTable.bounds
+        let searchBarFrame = self.searchBar.frame
+        
+        self.searchBar.frame = CGRect(x: tableBound.origin.x, y: tableBound.origin.y, width: searchBarFrame.size.width, height: searchBarFrame.size.height)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -98,25 +106,25 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20
+        return HEIGHT_FOR_SECTION_HEADER
     }
  
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let film = filmGroup[groupTitles[indexPath.section]]![indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FilmCell") as! FilmCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CELL_IDENTIFIER) as! FilmCell
         
         cell.setFilm(film: film)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 125
+        return HEIGHT_FOR_ROW
     }
     
     fileprivate func prepareForData() {
         filmTable.isHidden = true
         loadingImage.isHidden = false
-        self.loadingImage.image = UIImage.gif(asset: LOADING_ASSET)
+        self.loadingImage.image = UIImage.gif(asset: LOADING_ASSET_NAME)
         createDataCompletion(completion: {
             (filmsTemp) in
             self.films = filmsTemp
@@ -143,7 +151,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         for i in 0..<filmsSorted.count {
             let firstChar = getFirstLetterTitle(filmsSorted[i].title)
             
-            if isFirst(index: i) {
+            if isFirstIndex(index: i) {
                 groupTitle = firstChar
             }
             
@@ -156,18 +164,18 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
                 filmsInGroup.append(filmsSorted[i])
             }
             
-            if isLast(index: i, array: filmsSorted) {
+            if isLastIndex(index: i, array: filmsSorted) {
                 filmGroupTemp[groupTitle] = filmsInGroup
             }
         }
         return filmGroupTemp
     }
     
-    fileprivate func isFirst(index: Int) -> Bool {
+    fileprivate func isFirstIndex(index: Int) -> Bool {
         return index == 0
     }
     
-    fileprivate func isLast(index: Int, array: [Any]) -> Bool {
+    fileprivate func isLastIndex(index: Int, array: [Any]) -> Bool {
         return index == array.count - 1
     }
     
@@ -223,9 +231,9 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     
     fileprivate func getFilmObject(_ jsonArray: [[String : Any]], _ i: Int) -> Film {
         let filmData = jsonArray[i]
-        let filmTitle: String = "\(String(describing: filmData["title"]!))"
-        let filmPosterUrl: String = self.HOST_IMAGE + "\(String(describing: filmData["poster_path"]!))"
-        let filmOverview: String = "\(String(describing: filmData["overview"]!))"
+        let filmTitle: String = "\(String(describing: filmData[Film.TITLE]!))"
+        let filmPosterUrl: String = self.HOST_IMAGE + "\(String(describing: filmData[Film.POSTER]!))"
+        let filmOverview: String = "\(String(describing: filmData[Film.OVERVIEW]!))"
         return Film(imageUrl: filmPosterUrl, title: filmTitle, overview: filmOverview)
     }
 }
@@ -237,5 +245,4 @@ extension UIImage {
         }
         return nil
     }
-
 }

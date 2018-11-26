@@ -10,6 +10,7 @@ import UIKit
 import QuartzCore
 import Alamofire
 import AlamofireImage
+
 class FilmCell: UITableViewCell{
     
     @IBOutlet weak var filmTittleLabel: UILabel!
@@ -26,7 +27,7 @@ class FilmCell: UITableViewCell{
     
     func setFilm(film: Film) {
         self.film = film
-        setupFavouriteButton(button: favouriteButton, isActive: film.isFavourite)
+        setupFavouriteButton(button: favouriteButton, isActive: film.isFavourite())
         loadImage(imageView: filmPoster, imageUrl: film.posterImageUrl)
         roundImageView(imageView: filmPoster)
         filmTittleLabel.text = film.title
@@ -34,7 +35,7 @@ class FilmCell: UITableViewCell{
     }
     
     fileprivate func setupFavouriteButton(button: UIButton,isActive: Bool) {
-        setFavouriteButtonIcon(button: favouriteButton, isActive: self.film!.isFavourite)
+        setFavouriteButtonIcon(button: favouriteButton, isActive: self.film!.isFavourite())
         favouriteButton.addTarget(self, action: #selector(handleMarkAsFavorite), for: .touchUpInside)
     }
     
@@ -49,8 +50,8 @@ class FilmCell: UITableViewCell{
     }
     
     @objc func handleMarkAsFavorite() {
-        self.film!.isFavourite = !self.film!.isFavourite
-        setFavouriteButtonIcon(button: favouriteButton, isActive: self.film!.isFavourite)
+        self.film!.setFavourite(favourite: !self.film!.isFavourite())
+        setFavouriteButtonIcon(button: favouriteButton, isActive: self.film!.isFavourite())
     }
     
     fileprivate func loadImage(imageView: UIImageView, imageUrl: String) {
@@ -66,6 +67,7 @@ class FilmCell: UITableViewCell{
         imageView.makeRounded()
     }
 }
+
 extension UIImageView {
     func makeRounded() {
         let radius = self.frame.width/2.0
