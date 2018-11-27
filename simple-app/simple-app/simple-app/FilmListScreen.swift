@@ -27,10 +27,10 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     
     let HEIGHT_FOR_SECTION_HEADER: CGFloat = 20
     
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var loadingImage: UIImageView!
     @IBOutlet weak var filmTable: UITableView!
     
+    let searchBar = UISearchBar()
     var films = [Film]()
     var filmGroup: [String: [Film]] = [:]
     var groupTitles: [String] = []
@@ -39,6 +39,15 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         
         prepareForData()
+        setupSearchBar()
+    }
+    
+    fileprivate func setupSearchBar() {
+        self.navigationItem.titleView = searchBar
+        
+        searchBar.delegate = self
+        searchBar.showsScopeBar = true
+        searchBar.scopeButtonTitles = ["All", "Favourite"]
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -70,13 +79,6 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
         default:
             break
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let tableBound = self.filmTable.bounds
-        let searchBarFrame = self.searchBar.frame
-        
-        self.searchBar.frame = CGRect(x: tableBound.origin.x, y: tableBound.origin.y, width: searchBarFrame.size.width, height: searchBarFrame.size.height)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -238,7 +240,7 @@ class FilmListScreen: UIViewController, UITableViewDataSource, UITableViewDelega
     }
 }
 
-extension UIImage {
+ extension UIImage {
     public class func gif(asset: String) -> UIImage? {
         if let asset = NSDataAsset(name: asset) {
             return UIImage.gif(data: asset.data)
